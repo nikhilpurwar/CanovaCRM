@@ -1,0 +1,119 @@
+import React from 'react'
+import { Link } from "react-router-dom";
+import './employees.css'
+
+const Employee = () => {
+  return (
+    <div className="employee">
+      <nav className='navbar'>
+        <div class="search-bar">
+          <div class="search-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M22.1333 24L13.7333 15.6C13.0667 16.1333 12.3 16.5556 11.4333 16.8667C10.5667 17.1778 9.64445 17.3333 8.66667 17.3333C6.24444 17.3333 4.19444 16.4944 2.51667 14.8167C0.838889 13.1389 0 11.0889 0 8.66667C0 6.24444 0.838889 4.19444 2.51667 2.51667C4.19444 0.838889 6.24444 0 8.66667 0C11.0889 0 13.1389 0.838889 14.8167 2.51667C16.4944 4.19444 17.3333 6.24444 17.3333 8.66667C17.3333 9.64445 17.1778 10.5667 16.8667 11.4333C16.5556 12.3 16.1333 13.0667 15.6 13.7333L24 22.1333L22.1333 24ZM8.66667 14.6667C10.3333 14.6667 11.75 14.0833 12.9167 12.9167C14.0833 11.75 14.6667 10.3333 14.6667 8.66667C14.6667 7 14.0833 5.58333 12.9167 4.41667C11.75 3.25 10.3333 2.66667 8.66667 2.66667C7 2.66667 5.58333 3.25 4.41667 4.41667C3.25 5.58333 2.66667 7 2.66667 8.66667C2.66667 10.3333 3.25 11.75 4.41667 12.9167C5.58333 14.0833 7 14.6667 8.66667 14.6667Z" fill="#636060" />
+            </svg>
+          </div>
+          <input type="text" placeholder="Search here..." class="search-input" />
+        </div>
+      </nav>
+      <div className="employeeContainer">
+        <div className="navPath">
+          <div>
+            <Link>Home </Link>
+            <svg width="6" height="10" viewBox="0 0 6 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M3.64167 4.75L0 1.10833L1.10833 0L5.85833 4.75L1.10833 9.5L0 8.39167L3.64167 4.75Z" fill="#979797" />
+            </svg>
+            <Link> Settings</Link>
+          </div>
+          <button className="AddEmployeeBtn" type="submit">Add Employee</button>
+        </div>
+        <div className="employeeTable">
+          <div className='fake'></div>
+          <table>
+            <thead>
+              <tr>
+                <th><input type="checkbox" /></th>
+                <th>Name</th>
+                <th>Employee ID</th>
+                <th>Assigned Leads</th>
+                <th>Closed Leads</th>
+                <th>Status</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+
+              <tr>
+                <td><input type="checkbox" /></td>
+                <td>
+                  <div class="user">
+                    <div class="avatar">TF</div>
+                    <div class="user-info">
+                      <span>Tanner Finsha</span>
+                      <span>Tannerfisher@gmail.com</span>
+                    </div>
+                  </div>
+                </td>
+                <td><span class="badge">#23454GH6J7YT6</span></td>
+                <td>5</td>
+                <td>2</td>
+                <td>
+                  <span class="status active">
+                    <span class="dot"></span> Active
+                  </span>
+                </td>
+                <td class="actions">⋮</td>
+              </tr>
+
+              <tr>
+                <td><input type="checkbox" /></td>
+                <td>
+                  <div class="user">
+                    <div class="avatar">EW</div>
+                    <div class="user-info">
+                      <span>Emeto Winner</span>
+                      <span>Emetowinner@gmail.com</span>
+                    </div>
+                  </div>
+                </td>
+                <td><span class="badge">#23454GH6J7YT6</span></td>
+                <td>3</td>
+                <td>1</td>
+                <td>
+                  <span class="status active">
+                    <span class="dot"></span> Active
+                  </span>
+                </td>
+                <td class="actions">⋮</td>
+              </tr>
+
+              <tr>
+                <td><input type="checkbox" /></td>
+                <td>
+                  <div class="user">
+                    <div class="avatar">TO</div>
+                    <div class="user-info">
+                      <span>Tassy Omah</span>
+                      <span>Tassyomah@gmail.com</span>
+                    </div>
+                  </div>
+                </td>
+                <td><span class="badge">#23454GH6J7YT6</span></td>
+                <td>5</td>
+                <td>0</td>
+                <td>
+                  <span class="status inactive">
+                    <span class="dot"></span> Inactive
+                  </span>
+                </td>
+                <td class="actions">⋮</td>
+              </tr>
+
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+export default Employee

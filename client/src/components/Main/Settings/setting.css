@@ -1,0 +1,106 @@
+/* .navbar{
+    height: 108px;
+    border-bottom: 1px solid #AEAEAE;
+    position: sticky;
+    top: 0;
+} */
+
+.settingsContainer {
+  padding: 20px;
+}
+
+.settingsContainer > .navPath {
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+}
+
+.navPath a {
+  color: #616161;
+  font-weight: 600;
+  font-size: 18px;
+}
+
+/* .settingForm{
+    border: 1px solid #B1B1B1;
+    border-radius: 16px;
+    padding: 20px;
+}
+
+.formHeader{
+    border-bottom: 1px solid #B1B1B1;;
+} */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
+
+.settingForm {
+  background-color: #fff;
+  border: 1px solid #B1B1B1;
+  border-radius: 16px;
+  padding: 20px;
+}
+
+.settingForm form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.formHeader {
+  font-size: 20px;
+  font-weight: 600;
+  color: #747474;
+  margin-bottom: 24px;
+  border-bottom: 1px solid #ccc;
+  /* padding-bottom: 10px; */
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.bottomBorder {
+  width: 130px;
+  border-bottom: 4px solid #747474;
+  border-radius: 10px 10px 0px 0px;
+}
+
+.formGroup {
+  width: 500px;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 10px;
+  gap: 10px;
+}
+
+.formGroup label {
+  font-size: 17px;
+  color: #5E5E5E;
+}
+
+.formGroup input {
+  height: 52.47px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 11.24px;
+  font-size: 14px;
+}
+
+.formActions {
+  margin-top: 150px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.formActions button {
+  width: 190px;
+  height: 50px;
+  padding: 10px 20px;
+  background-color: #D9D9D9;
+  color: #636060;
+  border: none;
+  border-radius: 15px;
+  font-weight: 600;
+  font-size: 18px;
+  cursor: pointer;
+}

@@ -1,0 +1,47 @@
+.sidebar {
+    font-weight: 600;
+    font-size: 18px;
+}
+
+.header {
+    padding: 0 30px;
+    height: 108px;
+    border-bottom: 1px solid #AEAEAE;
+    display: flex;
+    align-items: center;
+}
+
+.header span {
+    color: #0003D0;
+}
+
+.menuItems {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 34px;
+}
+
+.menuItems li a {
+    color: inherit;
+    text-decoration: none;
+}
+
+
+.item {
+    padding: 10px;
+    margin: 0 10px 0 20px;
+    border-radius: 10px;
+}
+
+.item-active {
+    background: #A7A7A7;
+    color: white;
+    padding: 5px 10px;
+    margin: 0 10px 0 20px;
+    border-radius: 10px;
+}
+
+.item-active a {
+    color: inherit;
+}
