@@ -1,0 +1,127 @@
+.sales-analytics-container {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.sale-analytics-title {
+  position: absolute;
+  left: 15px;
+  top: 10px;
+  font-family: 'REM', sans-serif;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 20px;
+  letter-spacing: 0.001em;
+  color: #616161;
+}
+
+.graph-wrapper {
+  position: absolute;
+  width: calc(100% - 60px);
+  height: calc(100% - 60px);
+  left: 30px;
+  top: 40px;
+}
+
+.y-axis {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 0 5px;
+}
+
+.y-axis-label {
+  font-family: 'REM', sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 6px;
+  color: #616161;
+  text-align: right;
+  min-width: 25px;
+}
+
+.horizontal-lines {
+  position: absolute;
+  top: 0;
+  left: 40px;
+  width: calc(100% - 40px);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.horizontal-line {
+  width: 100%;
+  border-bottom: 1px dashed rgba(217, 217, 217, 0.95);
+}
+
+.graph-bars-container {
+  position: absolute;
+  bottom: 25px;
+  left: 40px;
+  width: calc(100% - 40px);
+  height: calc(100% - 40px);
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.bar-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+  margin: 0 2px;
+}
+
+.graph-bar {
+  width: 20px;
+  background: #D9D9D9;
+  border-radius: 20px 20px 0px 0px;
+  transition: background-color 0.3s ease;
+}
+
+.graph-bar:hover {
+  background: #B1B1B1;
+}
+
+.x-axis-label {
+  font-family: 'REM', sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 6px;
+  color: #616161;
+  margin-top: 8px;
+  text-align: center;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .sale-analytics-title {
+    position: static;
+    margin-bottom: 20px;
+  }
+  
+  .graph-wrapper {
+    position: static;
+    width: 100%;
+    height: 300px;
+  }
+  
+  .bar-container {
+    margin: 0 1px;
+  }
+  
+  .graph-bar {
+    width: 15px;
+  }
+}

@@ -1,0 +1,497 @@
+/* dashboard.css - Main Dashboard Styles */
+
+/* Reset and base styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Inter', 'REM', sans-serif;
+  background-color: #FFFFFF;
+  color: #616161;
+}
+
+/* Dashboard container grid */
+.dashboard_container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  padding: 20px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+/* Dashboard card styles */
+.dashboard_card1 {
+  grid-column: span 3;
+  padding: 20px;
+  background: #FFFFFF;
+  border: 1px solid #B1B1B1;
+  border-radius: 16px;
+  text-align: center;
+  min-height: 140px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* Graph container (spans 2 columns) */
+.dashboard_container1 {
+  grid-column: span 2;
+  padding: 20px;
+  background: #FFFFFF;
+  border: 1px solid #B1B1B1;
+  border-radius: 16px;
+  position: relative;
+  height: 290px;
+}
+
+/* Activity feed container */
+.dashboard_container2 {
+  grid-column: span 1;
+  padding: 20px;
+  background: #FFFFFF;
+  border: 1px solid #B1B1B1;
+  border-radius: 16px;
+  min-height: 290px;
+}
+
+/* Employee table container (spans all 3 columns) */
+.dashboard_container3 {
+  grid-column: span 3;
+  padding: 20px;
+  background: #FFFFFF;
+  border: 1px solid #B1B1B1;
+  border-radius: 16px;
+  min-height: 350px;
+  overflow-x: auto;
+}
+
+/* Navigation bar styles */
+.navbar {
+  background: #FFFFFF;
+  padding: 20px;
+  border-bottom: 1px solid #EAECF0;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.search-bar {
+  display: flex;
+  align-items: center;
+  background: #FAFBFB;
+  border: 1px solid #EAECF0;
+  border-radius: 8px;
+  padding: 8px 12px;
+  width: 300px;
+}
+
+.search-icon {
+  margin-right: 8px;
+  display: flex;
+  align-items: center;
+}
+
+.search-input {
+  border: none;
+  background: transparent;
+  outline: none;
+  width: 100%;
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  color: #101828;
+}
+
+.search-input::placeholder {
+  color: #6B788E;
+}
+
+/* Employee container and nav path */
+.employeeContainer {
+  padding: 20px;
+}
+
+.navPath {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.navPath div {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.navPath a {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  color: #42526D;
+  text-decoration: none;
+}
+
+.navPath a:hover {
+  color: #091E42;
+}
+
+/* Sales Analytics Graph Styles */
+.sale-analytics-title {
+  position: absolute;
+  left: 15px;
+  top: 10px;
+  font-family: 'REM';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 20px;
+  letter-spacing: 0.001em;
+  color: #616161;
+}
+
+.graph-container {
+  position: absolute;
+  width: calc(100% - 60px);
+  height: calc(100% - 60px);
+  left: 30px;
+  top: 40px;
+}
+
+.y-axis {
+  position: absolute;
+  left: 15px;
+  top: 46.41px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 223px;
+}
+
+.y-axis-label {
+  font-family: 'REM';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 6px;
+  color: #616161;
+}
+
+.x-axis {
+  position: absolute;
+  bottom: 30px;
+  left: 94.4px;
+  width: calc(100% - 120px);
+  display: flex;
+  justify-content: space-between;
+}
+
+.x-axis-label {
+  font-family: 'REM';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 6px;
+  color: #616161;
+  text-align: center;
+}
+
+.graph-bars {
+  position: absolute;
+  bottom: 50px;
+  left: 94.4px;
+  width: calc(100% - 120px);
+  height: 200px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+}
+
+.graph-bar {
+  width: 20px;
+  background: #D9D9D9;
+  border-radius: 20px 20px 0px 0px;
+  margin: 0 10px;
+}
+
+/* Horizontal dashed lines */
+.horizontal-line {
+  position: absolute;
+  width: 100%;
+  border: 1px dashed rgba(217, 217, 217, 0.95);
+}
+
+/* Activity Feed Styles */
+.activity-feed-title {
+  font-family: 'REM';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 20px;
+  letter-spacing: 0.001em;
+  color: #616161;
+  margin-bottom: 20px;
+}
+
+.activity-item {
+  padding: 12px 0;
+  border-bottom: 1px solid #EAECF0;
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  color: #42526D;
+}
+
+.activity-item:last-child {
+  border-bottom: none;
+}
+
+/* Employee Table Styles */
+.employee-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.employee-table th {
+  background: #FAFBFB;
+  border-bottom: 1px solid #EAECF0;
+  padding: 12px 24px;
+  text-align: left;
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 18px;
+  color: #42526D;
+}
+
+.employee-table td {
+  padding: 16px 24px;
+  border-bottom: 1px solid #EAECF0;
+  font-family: 'REM';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  color: #616161;
+}
+
+.employee-table tr:nth-child(even) {
+  background: #F4F4F4;
+}
+
+.employee-avatar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 24px;
+  text-align: center;
+}
+
+.avatar-blue {
+  background: #C7B9DA;
+  color: #93312B;
+}
+
+.avatar-orange {
+  background: #FFF2EA;
+  color: #93312B;
+}
+
+.employee-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.employee-name {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 20px;
+  color: #101828;
+}
+
+.employee-email {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  color: #6B788E;
+}
+
+/* Badge styles */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px 2px 6px;
+  border-radius: 16px;
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 18px;
+  text-align: center;
+}
+
+.badge-blue {
+  background: #F5F6F7;
+  color: #091E42;
+}
+
+.badge-success {
+  background: #ECFDF3;
+  color: #027A48;
+}
+
+.badge-warning {
+  background: #FFF2EA;
+  color: #F15046;
+}
+
+.badge-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-right: 6px;
+}
+
+.badge-dot-success {
+  background: #12B76A;
+}
+
+.badge-dot-warning {
+  background: #F15046;
+}
+
+/* Status styles */
+.status-active {
+  color: #027A48;
+  font-weight: 500;
+}
+
+/* Card content styles */
+.card-title {
+  font-family: 'REM';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 20px;
+  color: #616161;
+  margin-bottom: 8px;
+}
+
+.card-value {
+  font-family: 'REM';
+  font-style: normal;
+  font-weight: 600;
+  font-size: 24px;
+  line-height: 32px;
+  color: #091E42;
+}
+
+.card-subtitle {
+  font-family: 'REM';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 16px;
+  color: #6B788E;
+  margin-top: 4px;
+}
+
+/* Responsive design */
+@media (max-width: 1200px) {
+  .dashboard_container {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .dashboard_container1 {
+    grid-column: span 2;
+  }
+  
+  .dashboard_container3 {
+    grid-column: span 2;
+  }
+}
+
+@media (max-width: 768px) {
+  .dashboard_container {
+    grid-template-columns: 1fr;
+  }
+  
+  .dashboard_card1,
+  .dashboard_container1,
+  .dashboard_container2,
+  .dashboard_container3 {
+    grid-column: span 1;
+  }
+  
+  .employee-table {
+    display: block;
+    overflow-x: auto;
+  }
+  
+  .navbar {
+    justify-content: center;
+  }
+  
+  .search-bar {
+    width: 100%;
+    max-width: 400px;
+  }
+}
+
+@media (max-width: 480px) {
+  .dashboard_container {
+    padding: 10px;
+    gap: 10px;
+  }
+  
+  .dashboard_card1,
+  .dashboard_container1,
+  .dashboard_container2,
+  .dashboard_container3 {
+    padding: 15px;
+  }
+  
+  .graph-bars {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  
+  .graph-bar {
+    margin: 0 5px 10px;
+  }
+  
+  .x-axis {
+    flex-wrap: wrap;
+  }
+  
+  .x-axis-label {
+    margin: 0 5px 10px;
+  }
+}

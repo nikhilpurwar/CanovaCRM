@@ -1,0 +1,109 @@
+.modalOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 50;
+}
+
+.employeeModal {
+  width: 90%;
+  height: 90%;
+  background: #fff;
+  border-radius: 16px;
+  padding: 24px;
+  position: relative;
+}
+
+.modalHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.closeBtn {
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.employeeForm {
+  margin-top: 30px;
+  max-width: 520px;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 18px;
+}
+
+.formGroup input {
+  height: 52px;
+  border-radius: 11px;
+  border: 1px solid #3e3e3e;
+  padding: 0 16px;
+}
+
+.formGroupInfo{
+  display: flex;
+  align-items: end;
+  gap: 10px;
+}
+
+.formGroupInfo svg{
+  margin-bottom: 24px;
+  cursor: pointer;
+}
+
+.modalActions {
+  display: flex;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.modalActions button {
+  padding: 10px 18px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+}
+
+.modalActions .primary {
+  background: #1849d6;
+  color: white;
+}
+
+.tooltipIcon {
+  position: relative; /* parent is the anchor */
+  display: inline-block; /* keeps icon inline */
+}
+
+.infoTooltip {
+  position: absolute;
+  bottom: -40%; /* place above the icon */
+  left: 50%;    /* center horizontally */
+
+  width: 315px;
+  height: 48px;
+  background: #F3F3F3;
+  box-shadow: 0px 4px 32.35px rgba(0, 0, 0, 0.25);
+  border-radius: 13px;
+  /* padding: 10px; */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  color: #333;
+  z-index: 1000;
+
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.infoTooltip.show {
+  opacity: 1;
+}

@@ -1,0 +1,141 @@
+.activity-feed-card {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.activity-feed-title {
+  font-family: 'REM', sans-serif;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 20px;
+  letter-spacing: 0.001em;
+  color: #616161;
+  margin-bottom: 20px;
+}
+
+.activities-list {
+  flex: 1;
+  overflow-y: auto;
+}
+
+.activity-item {
+  padding: 12px 0;
+  border-bottom: 1px solid #EAECF0;
+}
+
+.activity-item:last-child {
+  border-bottom: none;
+}
+
+.activity-content {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.activity-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.assignment-icon {
+  background: #ECFDF3;
+  color: #027A48;
+}
+
+.deal-icon {
+  background: #FEF3F2;
+  color: #B42318;
+}
+
+.lead-icon {
+  background: #F2F4F7;
+  color: #344054;
+}
+
+.achievement-icon {
+  background: #FEF6EE;
+  color: #B93815;
+}
+
+.meeting-icon {
+  background: #F0F9FF;
+  color: #026AA2;
+}
+
+.activity-text-container {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.activity-text {
+  font-family: 'Inter', sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  color: #42526D;
+}
+
+.activity-time {
+  font-family: 'Inter', sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 18px;
+  color: #6B788E;
+}
+
+.view-all-container {
+  padding-top: 15px;
+  border-top: 1px solid #EAECF0;
+  margin-top: 10px;
+}
+
+.view-all-button {
+  width: 100%;
+  padding: 10px 16px;
+  background: #FAFBFB;
+  border: 1px solid #EAECF0;
+  border-radius: 8px;
+  font-family: 'Inter', sans-serif;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 20px;
+  color: #42526D;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.view-all-button:hover {
+  background: #F5F6F7;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .activity-feed-title {
+    font-size: 14px;
+    line-height: 18px;
+    margin-bottom: 15px;
+  }
+  
+  .activity-text {
+    font-size: 13px;
+    line-height: 18px;
+  }
+  
+  .activity-time {
+    font-size: 11px;
+    line-height: 16px;
+  }
+}

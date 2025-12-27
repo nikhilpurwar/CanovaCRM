@@ -14,7 +14,7 @@
   border-bottom: 1px solid #AEAEAE;
   position: sticky;
   top: 0;
-  z-index: 100;
+  z-index: 10;
   display: flex;
   align-items: center;
   box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.25);
@@ -221,6 +221,79 @@ input[type="checkbox"] {
   background: var(--inactive-text);
 }
 
+/* PAGINATION CONTAINER */
+.paginationContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 24px 16px;
+  margin-top: 24px;
+}
+
+/* PREV / NEXT BUTTON */
+.paginationBtn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  height: 36px;
+  background: #ffffff;
+  border: 1px solid #d0d5dd;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #344054;
+  cursor: pointer;
+  box-shadow: 0px 1px 2px rgba(16, 24, 40, 0.05);
+}
+
+.paginationBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* NUMBER WRAPPER */
+.paginationNumbers {
+  display: flex;
+  gap: 2px;
+  align-items: center;
+}
+
+/* PAGE NUMBER */
+.paginationNumber {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  background: transparent;
+  border: none;
+  font-size: 14px;
+  font-weight: 500;
+  color: #667085;
+  cursor: pointer;
+}
+
+.paginationNumber:hover {
+  background: #eff1f4;
+}
+
+/* ACTIVE PAGE */
+.paginationNumber.active {
+  background: #eff1f4;
+  color: #091e42;
+}
+
+/* DOTS */
+.paginationDots {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #667085;
+  font-weight: 500;
+}
+
+
 /* Actions */
 .actions {
   font-size: 20px;
@@ -231,3 +304,66 @@ input[type="checkbox"] {
 .actions:hover {
   color: #374151;
 }
+
+
+.actions {
+  position: relative;
+}
+
+.three-dots {
+  cursor: pointer;
+  font-size: 18px;
+}
+
+.actionsMenuWrapper{
+  position: relative;
+  top: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 10;
+}
+
+.actionMenu {
+  position: absolute;
+  right: 30px;
+  top: 0;
+  width: 140px;
+  height: 95px;
+  padding: 10px;
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-shadow: 2px 4px 4px rgba(0, 0, 0, 0.25);
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.actionMenu div {
+  height: 32px;
+  padding: 10px;
+  font-size: 12px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.edit-icon, .delete-icon {
+  background: #FFEFFD;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  border-radius: 3px;
+  padding: 2px;
+} 
+
+.actionMenu div:hover {
+  background: #E6E6E6;
+  border-radius: 10px;
+}
+
