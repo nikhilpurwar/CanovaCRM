@@ -1,31 +1,30 @@
 import React from 'react';
 import './Cards.css';
 
-const Cards = () => {
-  // Card data - in a real app, this would come from props or API
+const Cards = ({ stats = {} }) => {
   const cardData = [
     {
       id: 1,
       title: "Unassigned Leads",
-      value: "12",
+      value: stats?.unassignedLeads ?? "0",
       subtitle: "Leads waiting for assignment"
     },
     {
       id: 2,
       title: "Assigned This Week",
-      value: "24",
+      value: stats?.assignedThisWeek ?? "0",
       subtitle: "Leads assigned this week"
     },
     {
       id: 3,
       title: "Active Salespeople",
-      value: "5",
+      value: stats?.activeSalespeople ?? "0",
       subtitle: "Currently active team members"
     },
     {
       id: 4,
       title: "Conversion Rate",
-      value: "32%",
+      value: `${stats?.conversionRate ?? "0"}%`,
       subtitle: "Overall conversion percentage"
     }
   ];
