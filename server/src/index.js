@@ -16,10 +16,27 @@ const app = express();
 // Connect to MongoDB
 connectDB();
 
-// Middleware - Allow both admin (5173) and employee (5174) frontends
+// Middleware - configure CORS origins from env or fall back to sensible defaults
+// Use exact origins (no trailing slash). Set ALLOWED_ORIGINS in env as comma-separated list.
+const defaultOrigins = [
+  'http://localhost:5173',
+  'http://localhost:5174',
+  'https://crm-canova.onrender.com',
+  'https://sales-crm-canova.onrender.com'
+];
+const allowedOrigins = (process.env.ALLOWED_ORIGINS || defaultOrigins.join(',')).split(',').map(s => s.trim()).filter(Boolean);
+
 app.use(cors({
-  origin: ['http://localhost:5173', 'http://localhost:5174' , 'https://sales-crm-canova.onrender.com', 'https://crm-canova.onrender.com/'],
-  credentials: true
+  origin: function (origin, callback) {
+    // Allow requests with no origin (like mobile apps or curl)
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.indexOf(origin) !== -1) {
+      return callback(null, true);
+    }
+    return callback(new Error('CORS policy: origin not allowed'));
+  },
+  credentials: true,
+  optionsSuccessStatus: 200
 }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
