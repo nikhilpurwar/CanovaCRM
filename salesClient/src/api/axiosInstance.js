@@ -1,8 +1,22 @@
 import axios from 'axios';
 
-// Create axios instance with base configuration
+// Determine API base URL: prefer VITE env when provided, otherwise
+// use localhost for development hosts and the production Render URL for remote hosts.
+const PROD_API = 'https://server-canovacrm.onrender.com/api';
+const ENV_URL = import.meta.env?.VITE_API_URL;
+
+function getBaseUrl() {
+  if (ENV_URL) return ENV_URL;
+  if (typeof window !== 'undefined') {
+    const host = window.location.hostname;
+    if (host === 'localhost' || host === '127.0.0.1' || host === '') return 'http://localhost:5000/api';
+    return PROD_API;
+  }
+  return 'http://localhost:5000/api';
+}
+
 const axiosInstance = axios.create({
-  baseURL: 'http://localhost:5000/api',
+  baseURL: getBaseUrl(),
   headers: {
     'Content-Type': 'application/json'
   }

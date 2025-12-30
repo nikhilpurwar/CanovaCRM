@@ -1,9 +1,20 @@
 import axios from 'axios';
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+const PROD_API = 'https://server-canovacrm.onrender.com/api';
+const ENV_URL = import.meta.env?.VITE_API_URL;
+
+function getBaseUrl() {
+  if (ENV_URL) return ENV_URL;
+  if (typeof window !== 'undefined') {
+    const host = window.location.hostname;
+    if (host === 'localhost' || host === '127.0.0.1' || host === '') return 'http://localhost:5000/api';
+    return PROD_API;
+  }
+  return 'http://localhost:5000/api';
+}
 
 const axiosInstance = axios.create({
-  baseURL: API_BASE_URL,
+  baseURL: getBaseUrl(),
   headers: {
     'Content-Type': 'application/json',
   },
