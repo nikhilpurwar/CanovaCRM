@@ -19,6 +19,6 @@ dist-ssr
 .DS_Store
 *.suo
 *.ntvs*
-*.njsproj
+*.njsprojgit push --set-upstream origin akasbranch
 *.sln
 *.sw?

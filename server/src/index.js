@@ -9,15 +9,16 @@ const authRoutes = require('./routes/authRoutes');
 const employeeRoutes = require('./routes/employeeRoutes');
 const leadRoutes = require('./routes/leadRoutes');
 const dashboardRoutes = require('./routes/dashboardRoutes');
+const attendanceRoutes = require('./routes/attendanceRoutes');
 
 const app = express();
 
 // Connect to MongoDB
 connectDB();
 
-// Middleware
+// Middleware - Allow both admin (5173) and employee (5174) frontends
 app.use(cors({
-  origin: process.env.FRONTEND_URL || 'http://localhost:5173',
+  origin: ['http://localhost:5173', 'http://localhost:5174'],
   credentials: true
 }));
 app.use(express.json());
@@ -33,6 +34,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/employees', employeeRoutes);
 app.use('/api/leads', leadRoutes);
 app.use('/api/dashboard', dashboardRoutes);
+app.use('/api/attendance', attendanceRoutes);
 
 // 404 handler
 app.use((req, res) => {

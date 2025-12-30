@@ -1,5 +1,7 @@
 const Employee = require('../models/Employee');
 const Activity = require('../models/Activity');
+const User = require('../models/User');
+const Lead = require('../models/Lead');
 
 // Create Employee
 exports.createEmployee = async (req, res, next) => {
@@ -10,8 +12,26 @@ exports.createEmployee = async (req, res, next) => {
       return res.status(400).json({ message: 'First name, last name, and email are required' });
     }
 
+    // Check if user with this email already exists
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      return res.status(400).json({ message: 'User with this email already exists' });
+    }
+
     const employeeId = `EMP-${Date.now()}-${Math.random().toString(36).substr(2, 9).toUpperCase()}`;
 
+    // Create User account for the employee (password = email)
+    const user = new User({
+      firstName,
+      lastName,
+      email,
+      password: email, // Password same as email
+      role: 'employee'
+    });
+
+    await user.save();
+
+    // Create Employee record and link to User
     const employee = new Employee({
       firstName,
       lastName,
@@ -21,12 +41,14 @@ exports.createEmployee = async (req, res, next) => {
       preferredLanguage: preferredLanguage && preferredLanguage.trim() ? preferredLanguage : 'English',
       department,
       phone,
+      userId: user._id, // Link to User account
       createdBy: req.user?.id
     });
 
     await employee.save();
 
     console.log(`[CREATE EMPLOYEE] Created ${firstName} ${lastName} with preferredLanguage: ${employee.preferredLanguage}`);
+    console.log(`[CREATE EMPLOYEE] Created User account for ${email} with password: ${email}`);
 
     // Log activity
     if (req.user?.id) {
@@ -41,8 +63,12 @@ exports.createEmployee = async (req, res, next) => {
 
     res.status(201).json({
       success: true,
-      message: 'Employee created successfully',
-      employee
+      message: 'Employee and login account created successfully',
+      employee,
+      loginCredentials: {
+        email: email,
+        password: email // Let admin know the initial password
+      }
     });
   } catch (error) {
     next(error);
@@ -148,6 +174,12 @@ exports.deleteEmployee = async (req, res, next) => {
       return res.status(404).json({ message: 'Employee not found' });
     }
 
+    // Delete associated User account if exists
+    if (employee.userId) {
+      await User.findByIdAndDelete(employee.userId);
+      console.log(`[DELETE EMPLOYEE] Deleted User account for ${employee.email}`);
+    }
+
     // Log activity
     if (req.user?.id) {
       await Activity.create({
@@ -160,7 +192,7 @@ exports.deleteEmployee = async (req, res, next) => {
 
     res.status(200).json({
       success: true,
-      message: 'Employee deleted successfully'
+      message: 'Employee and login account deleted successfully'
     });
   } catch (error) {
     next(error);
@@ -186,6 +218,110 @@ exports.getEmployeeStats = async (req, res, next) => {
         activeEmployees,
         totalAssignedLeads: totalAssignedLeads[0]?.total || 0,
         totalClosedLeads: totalClosedLeads[0]?.total || 0
+      }
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// Recalculate employee stats (for fixing existing data)
+exports.recalculateStats = async (req, res, next) => {
+  try {
+    const employees = await Employee.find();
+    
+    const updates = await Promise.all(
+      employees.map(async (emp) => {
+        const assignedLeads = await Lead.countDocuments({ assignedTo: emp._id });
+        const closedLeads = await Lead.countDocuments({
+          assignedTo: emp._id,
+          status: { $in: ['Won', 'Closed'] }
+        });
+
+        const conversionRate = assignedLeads > 0 
+          ? ((closedLeads / assignedLeads) * 100).toFixed(2)
+          : 0;
+
+        // Update employee with correct stats
+        return Employee.findByIdAndUpdate(
+          emp._id,
+          { 
+            assignedLeads,
+            closedLeads,
+            conversionRate
+          },
+          { new: true }
+        );
+      })
+    );
+
+    res.status(200).json({
+      success: true,
+      message: `Recalculated stats for ${updates.length} employees`,
+      updates
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// Fix employees with more than 3 leads (data cleanup)
+exports.fixLeadViolations = async (req, res, next) => {
+  try {
+    const MAX_LEADS_PER_EMPLOYEE = 3;
+    const employees = await Employee.find();
+    
+    const violations = [];
+    const fixes = [];
+
+    for (const emp of employees) {
+      const assignedLeads = await Lead.countDocuments({ assignedTo: emp._id });
+      
+      if (assignedLeads > MAX_LEADS_PER_EMPLOYEE) {
+        const excessCount = assignedLeads - MAX_LEADS_PER_EMPLOYEE;
+        violations.push({
+          employeeId: emp._id,
+          employeeName: `${emp.firstName} ${emp.lastName}`,
+          currentLeads: assignedLeads,
+          excessLeads: excessCount
+        });
+
+        // Get the oldest leads to unassign (keep the newest ones)
+        const excessLeads = await Lead.find({ assignedTo: emp._id })
+          .sort({ createdAt: 1 })
+          .limit(excessCount);
+
+        // Unassign these leads
+        for (const lead of excessLeads) {
+          await Lead.findByIdAndUpdate(
+            lead._id,
+            { assignedTo: null },
+            { new: true }
+          );
+          fixes.push({
+            leadId: lead._id,
+            leadName: `${lead.firstName} ${lead.lastName}`,
+            unassignedFrom: emp._id
+          });
+        }
+
+        // Update employee count
+        await Employee.findByIdAndUpdate(
+          emp._id,
+          { assignedLeads: MAX_LEADS_PER_EMPLOYEE },
+          { new: true }
+        );
+      }
+    }
+
+    res.status(200).json({
+      success: true,
+      message: `Fixed ${violations.length} employees with violations`,
+      violations,
+      fixes: fixes.length,
+      summary: {
+        employeesWithViolations: violations.length,
+        leadsUnassigned: fixes.length
       }
     });
   } catch (error) {

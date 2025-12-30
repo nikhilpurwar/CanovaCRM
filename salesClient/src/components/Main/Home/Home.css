@@ -44,6 +44,33 @@
   margin-bottom: 14px;
 }
 
+/* Stats Container */
+.stats-container {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.stat-card {
+  flex: 1;
+  background: #2051e5;
+  color: #fff;
+  padding: 15px;
+  border-radius: 10px;
+  text-align: center;
+}
+
+.stat-label {
+  font-size: 12px;
+  opacity: 0.8;
+  margin-bottom: 8px;
+}
+
+.stat-value {
+  font-size: 24px;
+  font-weight: 600;
+}
+
 /* Blue Cards */
 .blue-card {
   background: #2051e5;
@@ -64,6 +91,30 @@
 .blue-card .time {
   font-size: 13px;
   margin-top: 4px;
+}
+
+.check-btn {
+  padding: 8px 16px;
+  background: #ffd600;
+  border: none;
+  border-radius: 8px;
+  color: #2051e5;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 12px;
+  transition: all 0.3s ease;
+  margin-left: 8px;
+}
+
+.check-btn:hover:not(:disabled) {
+  background: #ffed4e;
+  transform: translateY(-2px);
+  box-shadow: 0 2px 8px rgba(255, 214, 0, 0.4);
+}
+
+.check-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 
 .pill {

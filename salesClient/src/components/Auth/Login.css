@@ -70,3 +70,18 @@
   cursor: pointer;
   align-self: center;
 }
+
+.submit-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Error Message */
+.error-message {
+  background: #ff4444;
+  color: white;
+  padding: 10px;
+  border-radius: 5px;
+  font-size: 14px;
+  text-align: center;
+}
