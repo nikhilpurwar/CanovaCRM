@@ -1,0 +1,25 @@
+.crm-modal-backdrop{
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+.crm-modal{
+  width: 320px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.25);
+  padding: 14px;
+}
+.crm-modal-title{
+  font-weight: 600;
+  font-size: 16px;
+  color: #20304a;
+  margin-bottom: 8px;
+}
+.crm-modal-body{
+  font-size: 14px;
+}

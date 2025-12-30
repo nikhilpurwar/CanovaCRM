@@ -1,0 +1,10 @@
+.profile-page{ max-width:393px;margin:auto;background:#fff;min-height:100vh;font-family:Inter,Arial,sans-serif }
+.profile-header{ height:130px;background:#2051e5;border-radius:0 0 20px 20px;padding:14px 22px;color:#fff }
+.brand{ font-weight:600 }
+.profile-form{ padding:24px; display:flex;flex-direction:column;gap:14px }
+.profile-form label{ color:#5e5e5e; font-size:12px }
+.profile-form input{ padding:12px;border-radius:8px;border:1px solid #3e3e3e }
+.profile-actions{ display:flex;gap:12px;margin-top:18px }
+.btn{ padding:10px 26px;border-radius:20px;border:none;color:#fff }
+.btn.save{ background:#2051e5 }
+.btn.logout{ background:#e53420 }
