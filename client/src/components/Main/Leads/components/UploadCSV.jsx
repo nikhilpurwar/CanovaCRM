@@ -105,7 +105,7 @@ const UploadCSV = ({ onClose }) => {
 
             // Call backend API to bulk create leads with automatic assignment
             setProgress(50);
-            const response = await axiosInstance.post('/leads/bulk', { leads });
+            const response = await axiosInstance.post('/leads/bulk-create', { leads });
             
             if (response.data.success) {
               setProgress(100);

@@ -3,6 +3,12 @@ const router = express.Router();
 const employeeController = require('../controllers/employeeController');
 const { authMiddleware, adminMiddleware } = require('../middleware/auth');
 
+// Admin-only: Recalculate employee stats (must come before /:id)
+router.post('/admin/recalculate-stats', authMiddleware, adminMiddleware, employeeController.recalculateStats);
+
+// Admin-only: Fix lead violations (must come before /:id)
+router.post('/admin/fix-violations', authMiddleware, adminMiddleware, employeeController.fixLeadViolations);
+
 // Protected routes - all users can read
 router.get('/', authMiddleware, employeeController.getAllEmployees);
 router.get('/stats', authMiddleware, employeeController.getEmployeeStats);

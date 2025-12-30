@@ -2,12 +2,16 @@ const Lead = require('../models/Lead');
 const Activity = require('../models/Activity');
 const Employee = require('../models/Employee');
 
+// Lead assignment round-robin trackers (in memory - resets on server restart)
+// For production, consider storing in database
+const roundRobinTrackers = new Map();
+
 // Helper function: Assign lead based on language with proper round-robin and threshold
 const assignLeadToEmployee = async (language) => {
   try {
     console.log(`\n[LEAD ASSIGNMENT] === Starting assignment for language: "${language}" ===`);
     
-    // STEP 1: Find employees with EXACT language match
+    // STEP 1: Find employees with EXACT language match ONLY
     let employees = await Employee.find({ 
       status: 'Active',
       preferredLanguage: language
@@ -15,31 +19,18 @@ const assignLeadToEmployee = async (language) => {
 
     console.log(`[LEAD ASSIGNMENT] Step 1: Found ${employees.length} employees with EXACT language match "${language}"`);
 
-    // STEP 2: If no exact match and language is not English, fallback to English speakers
-    if (employees.length === 0 && language !== 'English') {
-      console.log(`[LEAD ASSIGNMENT] Step 2: No exact match, trying English speakers as fallback`);
-      employees = await Employee.find({ 
-        status: 'Active',
-        preferredLanguage: 'English'
-      });
-      console.log(`[LEAD ASSIGNMENT] Step 2: Found ${employees.length} English speakers`);
-    }
-
-    // STEP 3: If still no employees, get ANY active employees
+    // STEP 2: If no employees with same language, return unassigned
+    // Do NOT fallback to other languages - respect language boundaries
     if (employees.length === 0) {
-      console.log(`[LEAD ASSIGNMENT] Step 3: No language match, getting ANY active employees`);
-      employees = await Employee.find({ status: 'Active' });
-      console.log(`[LEAD ASSIGNMENT] Step 3: Found ${employees.length} total active employees`);
-      
-      if (employees.length === 0) {
-        console.log(`[LEAD ASSIGNMENT] ERROR: No active employees exist in the system`);
-        return null;
-      }
+      console.log(`[LEAD ASSIGNMENT] ERROR: No active employees with language "${language}" - lead will remain UNASSIGNED`);
+      return null;
     }
 
     console.log(`[LEAD ASSIGNMENT] Total employees to consider: ${employees.length}`);
 
-    // STEP 4: Get lead counts for each employee
+    // STEP 3: Get lead counts for each employee
+    const MAX_LEADS_PER_EMPLOYEE = 3;
+    
     const employeeLeadCounts = await Promise.all(
       employees.map(async (emp) => {
         const count = await Lead.countDocuments({ assignedTo: emp._id });
@@ -48,36 +39,42 @@ const assignLeadToEmployee = async (language) => {
           empId: emp._id, 
           count, 
           name: `${emp.firstName} ${emp.lastName}`,
-          language: emp.preferredLanguage
+          language: emp.preferredLanguage,
+          isFull: count >= MAX_LEADS_PER_EMPLOYEE
         };
       })
     );
 
-    // STEP 5: Apply assignment logic with threshold
-    const threshold = 3;
+    // STEP 4: Find employees with available capacity (< 3 leads)
+    const availableEmployees = employeeLeadCounts.filter(e => e.count < MAX_LEADS_PER_EMPLOYEE);
     
-    // Find employees under threshold
-    const underThreshold = employeeLeadCounts.filter(e => e.count < threshold);
-    console.log(`[LEAD ASSIGNMENT] Step 5: Employees under threshold (${threshold}): ${underThreshold.length}`);
+    console.log(`[LEAD ASSIGNMENT] Step 4: Available employees (< ${MAX_LEADS_PER_EMPLOYEE} leads): ${availableEmployees.length}`);
     
-    let selectedEmployee;
-    
-    if (underThreshold.length > 0) {
-      // Assign to employee with LEAST leads (for balanced distribution)
-      const minCount = Math.min(...underThreshold.map(e => e.count));
-      const candidates = underThreshold.filter(e => e.count === minCount);
-      
-      // If multiple have same count, pick the first one (or could randomize for true round-robin)
-      selectedEmployee = candidates[0];
-      console.log(`[LEAD ASSIGNMENT] ✓ Assigned to ${selectedEmployee.name} (${selectedEmployee.language}) with ${selectedEmployee.count} leads`);
-    } else {
-      // All at or above threshold - assign to employee with LEAST leads
-      console.log(`[LEAD ASSIGNMENT] All employees at threshold, distributing equally`);
-      const minCount = Math.min(...employeeLeadCounts.map(e => e.count));
-      const candidates = employeeLeadCounts.filter(e => e.count === minCount);
-      selectedEmployee = candidates[0];
-      console.log(`[LEAD ASSIGNMENT] ✓ Assigned to ${selectedEmployee.name} (${selectedEmployee.language}) with ${selectedEmployee.count} leads`);
+    if (availableEmployees.length === 0) {
+      console.log(`[LEAD ASSIGNMENT] ERROR: All employees already have ${MAX_LEADS_PER_EMPLOYEE} leads - lead will remain UNASSIGNED`);
+      return null;
     }
+
+    // STEP 5: Use ROUND-ROBIN to distribute among available employees
+    if (!roundRobinTrackers.has(language)) {
+      roundRobinTrackers.set(language, 0);
+    }
+    
+    let currentIndex = roundRobinTrackers.get(language);
+    
+    // Sort by lead count first (assign to those with fewer leads)
+    availableEmployees.sort((a, b) => a.count - b.count);
+    
+    // Find employees with minimum lead count
+    const minCount = Math.min(...availableEmployees.map(e => e.count));
+    const candidatesWithMinCount = availableEmployees.filter(e => e.count === minCount);
+    
+    // Use round-robin on candidates with minimum count
+    const selectedEmployee = candidatesWithMinCount[currentIndex % candidatesWithMinCount.length];
+    currentIndex = (currentIndex + 1) % candidatesWithMinCount.length;
+    roundRobinTrackers.set(language, currentIndex);
+    
+    console.log(`[LEAD ASSIGNMENT] ✓ Assigned to ${selectedEmployee.name} (${selectedEmployee.language}) with ${selectedEmployee.count} leads [RR Index: ${currentIndex - 1}]`);
 
     return selectedEmployee.empId;
   } catch (error) {
@@ -169,23 +166,81 @@ exports.createLead = async (req, res, next) => {
 // Get all leads
 exports.getAllLeads = async (req, res, next) => {
   try {
-    const { page = 1, limit = 20, search = '', status, type, assignedTo } = req.query;
+    const { page = 1, limit = 20, search = '', status, type, assignedTo, assignedToMe } = req.query;
 
     let query = {};
+    
+    // If assignedToMe is true, get leads assigned to current user's employee record
+    if (assignedToMe === 'true' || assignedToMe === true) {
+      try {
+        // Find the employee record for the current user
+        const employee = await Employee.findOne({ userId: req.user.id });
+        if (employee) {
+          query.assignedTo = employee._id;
+          console.log(`[GET LEADS] Filter by assignedToMe - User: ${req.user.id}, Employee: ${employee._id}`);
+        } else {
+          console.log(`[GET LEADS] No employee found for user: ${req.user.id}`);
+          // Return empty leads array if user is not an employee
+          return res.status(200).json({
+            success: true,
+            count: 0,
+            total: 0,
+            page,
+            pages: 0,
+            leads: []
+          });
+        }
+      } catch (err) {
+        console.error('[GET LEADS] Error finding employee:', err);
+      }
+    } else if (assignedTo) {
+      // Specific employee ID provided
+      query.assignedTo = assignedTo;
+    }
+    
     if (search) {
-      query = {
-        $or: [
-          { firstName: { $regex: search, $options: 'i' } },
-          { lastName: { $regex: search, $options: 'i' } },
-          { email: { $regex: search, $options: 'i' } },
-          { company: { $regex: search, $options: 'i' } }
-        ]
-      };
+      query.$and = [
+        query,
+        {
+          $or: [
+            { firstName: { $regex: search, $options: 'i' } },
+            { lastName: { $regex: search, $options: 'i' } },
+            { email: { $regex: search, $options: 'i' } },
+            { company: { $regex: search, $options: 'i' } }
+          ]
+        }
+      ];
+      delete query.$or;
+      // Flatten the query
+      const tempQuery = { ...query };
+      query = { $and: [{ ...tempQuery }] };
+      if (search) {
+        query.$and.push({
+          $or: [
+            { firstName: { $regex: search, $options: 'i' } },
+            { lastName: { $regex: search, $options: 'i' } },
+            { email: { $regex: search, $options: 'i' } },
+            { company: { $regex: search, $options: 'i' } }
+          ]
+        });
+      }
+      // Simplify: just merge search into query
+      if (assignedToMe === 'true' || assignedToMe === true || assignedTo) {
+        const assignQuery = query.assignedTo ? { assignedTo: query.assignedTo } : {};
+        query = {
+          ...assignQuery,
+          $or: [
+            { firstName: { $regex: search, $options: 'i' } },
+            { lastName: { $regex: search, $options: 'i' } },
+            { email: { $regex: search, $options: 'i' } },
+            { company: { $regex: search, $options: 'i' } }
+          ]
+        };
+      }
     }
 
     if (status) query.status = status;
     if (type) query.type = type;
-    if (assignedTo) query.assignedTo = assignedTo;
 
     const leads = await Lead.find(query)
       .populate('assignedTo', 'firstName lastName email')
@@ -230,6 +285,12 @@ exports.updateLead = async (req, res, next) => {
   try {
     const { firstName, lastName, email, phone, company, location, source, status, type, language, assignedTo, notes, scheduledDate, followUpDate } = req.body;
 
+    // Get the current lead to check previous status
+    const currentLead = await Lead.findById(req.params.id);
+    if (!currentLead) {
+      return res.status(404).json({ message: 'Lead not found' });
+    }
+
     const lead = await Lead.findByIdAndUpdate(
       req.params.id,
       {
@@ -255,6 +316,29 @@ exports.updateLead = async (req, res, next) => {
 
     if (!lead) {
       return res.status(404).json({ message: 'Lead not found' });
+    }
+
+    // Update employee counters if status changed to Won or Closed
+    if (status && status !== currentLead.status && lead.assignedTo) {
+      const closingStatuses = ['Won', 'Closed'];
+      const wasOpen = !closingStatuses.includes(currentLead.status);
+      const isClosed = closingStatuses.includes(status);
+
+      if (wasOpen && isClosed) {
+        // Lead is being closed, increment closedLeads
+        await Employee.findByIdAndUpdate(
+          lead.assignedTo._id || lead.assignedTo,
+          { $inc: { closedLeads: 1 } },
+          { new: true }
+        );
+      } else if (!wasOpen && !isClosed) {
+        // Lead is being reopened, decrement closedLeads
+        await Employee.findByIdAndUpdate(
+          lead.assignedTo._id || lead.assignedTo,
+          { $inc: { closedLeads: -1 } },
+          { new: true }
+        );
+      }
     }
 
     // Log activity if status changed
@@ -313,6 +397,34 @@ exports.assignLead = async (req, res, next) => {
     const currentLead = await Lead.findById(req.params.id);
     if (!currentLead) {
       return res.status(404).json({ message: 'Lead not found' });
+    }
+
+    // Get the employee to assign to
+    const employee = await Employee.findById(assignedTo);
+    if (!employee) {
+      return res.status(404).json({ message: 'Employee not found' });
+    }
+
+    // VALIDATION 1: Check language compatibility
+    if (employee.preferredLanguage !== currentLead.language) {
+      return res.status(400).json({ 
+        message: `Cannot assign this lead. Employee speaks ${employee.preferredLanguage} but lead is ${currentLead.language}.`,
+        employeeLanguage: employee.preferredLanguage,
+        leadLanguage: currentLead.language
+      });
+    }
+
+    // VALIDATION 2: Check if employee already has 3 leads (unless reassigning from same employee)
+    const currentAssignedLeads = await Lead.countDocuments({ assignedTo });
+    const MAX_LEADS_PER_EMPLOYEE = 3;
+    
+    if (currentAssignedLeads >= MAX_LEADS_PER_EMPLOYEE && 
+        (!currentLead.assignedTo || currentLead.assignedTo.toString() !== assignedTo)) {
+      return res.status(400).json({ 
+        message: `Cannot assign this lead. Employee ${employee.firstName} ${employee.lastName} already has ${MAX_LEADS_PER_EMPLOYEE} leads (maximum allowed).`,
+        currentLeadsCount: currentAssignedLeads,
+        maxLeads: MAX_LEADS_PER_EMPLOYEE
+      });
     }
 
     // Update the lead
