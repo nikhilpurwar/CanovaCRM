@@ -126,7 +126,7 @@ const Leads = () => {
                     <th>Status</th>
                     <th>Type</th>
                     <th>Scheduled Date</th>
-                    <th>Action</th>
+                    {/* <th>Action</th> */}
                   </tr>
                 </thead>
 
@@ -147,7 +147,7 @@ const Leads = () => {
                         </td>
                         <td>{lead.type || '-'}</td>
                         <td>{formatDate(lead.scheduledDate)}</td>
-                        <td>
+                        {/* <td>
                           <button 
                             className="delete-btn"
                             onClick={() => handleDeleteLead(lead._id)}
@@ -155,7 +155,7 @@ const Leads = () => {
                           >
                             🗑️
                           </button>
-                        </td>
+                        </td> */}
                       </tr>
                     ))
                   ) : (

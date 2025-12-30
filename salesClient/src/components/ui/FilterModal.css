@@ -1,0 +1,23 @@
+.filter-modal{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+.filter-label{
+  color:#6f6f6f;
+  font-weight:500;
+}
+.filter-dropdown{
+  border:1.5px solid #c8c8c8;
+  border-radius:6px;
+  padding:8px 10px;
+  background:#fff;
+}
+.filter-save{
+  background:#2f2f2f;
+  color:#fff;
+  padding:10px 18px;
+  border-radius:20px;
+  border:none;
+  margin-top:8px;
+}

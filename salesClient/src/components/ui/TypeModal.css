@@ -1,0 +1,18 @@
+.type-modal{
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+  align-items:center;
+}
+.type-pill{
+  width:120px;
+  padding:10px 12px;
+  border-radius:12px;
+  border:none;
+  font-weight:600;
+  color:#fff;
+  cursor:pointer;
+}
+.type-pill.hot{ background:#f36a05 }
+.type-pill.warm{ background:#ffd400; color:#0a0a0a }
+.type-pill.cold{ background:#00e6f0; color:#00363a }

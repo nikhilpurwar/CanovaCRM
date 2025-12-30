@@ -1,0 +1,19 @@
+.schedule-page{ max-width:393px;margin:auto;background:#fff;min-height:100vh;font-family:Inter,Arial,sans-serif }
+.schedule-header{ height:130px;background:#2051e5;border-radius:0 0 20px 20px;padding:14px 22px;color:#fff }
+.brand{ font-weight:600 }
+.title{ font-size:22px;margin-top:20px }
+.search-area{ display:flex;gap:10px;padding:16px }
+.search-input{ flex:1;display:flex;align-items:center;background:#e0e0e0;padding:8px;border-radius:13px;gap:8px }
+.search-input input{border:none;background:transparent;outline:none}
+.filter-btn{ width:40px;height:40px;border-radius:26px;background:#d9d9d9;border:none }
+.schedule-list{ padding:0 16px 60px;display:flex;flex-direction:column;gap:18px }
+.sched-card{ display:flex;justify-content:space-between;align-items:flex-start;border-radius:16px;background:#f6f6f5;padding:18px }
+.sched-card.highlight{ background:#2051e5;color:#fff }
+.sched-left{ display:flex;flex-direction:column;gap:8px }
+.sched-type{ font-weight:600;font-size:16px }
+.sched-phone{ font-weight:500;font-size:12px }
+.sched-meta{ display:flex;align-items:center;gap:8px;color:inherit }
+.sched-person{ display:flex;align-items:center;gap:8px }
+.sched-right{ text-align:right }
+.sched-date{ font-weight:500 }
+.sched-date-val{ font-weight:500 }

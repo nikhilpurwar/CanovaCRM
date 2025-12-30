@@ -1,0 +1,18 @@
+.dt-modal{
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+}
+.dt-input{
+  border:1px solid #e0e0e0;
+  padding:10px;
+  border-radius:8px;
+}
+.dt-save{
+  background:#2f2f2f;
+  color:#fff;
+  padding:10px 18px;
+  border-radius:20px;
+  border:none;
+  margin-top:6px;
+}
