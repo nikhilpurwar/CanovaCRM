@@ -18,7 +18,7 @@ connectDB();
 
 // Middleware - Allow both admin (5173) and employee (5174) frontends
 app.use(cors({
-  origin: ['http://localhost:5173', 'http://localhost:5174'],
+  origin: ['http://localhost:5173', 'http://localhost:5174' , 'https://sales-crm-canova.onrender.com', 'https://crm-canova.onrender.com/'],
   credentials: true
 }));
 app.use(express.json());
