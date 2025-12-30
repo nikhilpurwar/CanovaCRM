@@ -1,30 +1,60 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 import './SalesAnalyticGraph.css';
 
 const SalesAnalyticGraph = () => {
-  // Graph data - in a real app, this would come from props or API
-  const barData = [
-    { day: 'Sat', value: 40, height: 147 },
-    { day: 'Sun', value: 54, height: 200 },
-    { day: 'Mon', value: 41, height: 150 },
-    { day: 'Tue', value: 33, height: 120 },
-    { day: 'Wed', value: 27, height: 100 },
-    { day: 'Thu', value: 40, height: 147 },
-    { day: 'Fri', value: 46, height: 170 },
-    { day: 'Sat', value: 82, height: 300 },
-    { day: 'Sun', value: 68, height: 250 },
-    { day: 'Mon', value: 57, height: 210 },
-    { day: 'Tue', value: 40, height: 147 },
-    { day: 'Wed', value: 46, height: 170 },
-    { day: 'Thu', value: 43, height: 160 },
-    { day: 'Fri', value: 14, height: 50 }
-  ];
+  const { stats } = useSelector(state => state.dashboard);
 
-  const yAxisLabels = ['60%', '50%', '40%', '30%', '20%', '10%', '0%'];
+  // Process sales data for the past 2 weeks
+  const salesData = Array.isArray(stats?.salesData) ? stats.salesData : [];
+  
+  // Generate the past 14 days of data
+  const today = new Date();
+  const last14Days = [];
+  const dataMap = {};
+
+  // Create a map of data by date
+  salesData.forEach(item => {
+    if (item._id) {
+      dataMap[item._id] = item.count;
+    }
+  });
+
+  // Generate 14 days of data
+  for (let i = 13; i >= 0; i--) {
+    const date = new Date(today);
+    date.setDate(date.getDate() - i);
+    const dateStr = date.toISOString().split('T')[0];
+    const count = dataMap[dateStr] || 0;
+    const conversionRate = count > 0 ? Math.min(100, count * 5) : 0; // Simulated conversion rate
+    
+    last14Days.push({
+      date: dateStr,
+      day: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][date.getDay()],
+      conversionRate: Math.round(conversionRate),
+      count: count
+    });
+  }
+
+  // Find max for scaling
+  const maxRate = Math.max(...last14Days.map(d => d.conversionRate), 60);
+  
+  // Calculate bar heights (max height 200px)
+  const barData = last14Days.map(item => ({
+    ...item,
+    height: (item.conversionRate / maxRate) * 200
+  }));
+
+  // Generate Y-axis labels
+  const yAxisLabels = [];
+  const step = Math.ceil(maxRate / 5);
+  for (let i = Math.ceil(maxRate); i >= 0; i -= step) {
+    yAxisLabels.push(`${i}%`);
+  }
 
   return (
     <div className="sales-analytics-container">
-      <h3 className="sale-analytics-title">Sale Analytics</h3>
+      <h3 className="sale-analytics-title">Sale Analytics (Past 2 Weeks)</h3>
       
       <div className="graph-wrapper">
         {/* Y-axis labels */}
@@ -36,8 +66,8 @@ const SalesAnalyticGraph = () => {
         
         {/* Horizontal dashed lines */}
         <div className="horizontal-lines">
-          {[0, 1, 2, 3, 4, 5, 6].map((line) => (
-            <div key={line} className="horizontal-line"></div>
+          {yAxisLabels.map((_, index) => (
+            <div key={index} className="horizontal-line"></div>
           ))}
         </div>
         
@@ -48,7 +78,7 @@ const SalesAnalyticGraph = () => {
               <div 
                 className="graph-bar" 
                 style={{ height: `${bar.height}px` }}
-                title={`${bar.value}%`}
+                title={`${bar.conversionRate}% - ${bar.count} leads`}
               ></div>
               <div className="x-axis-label">{bar.day}</div>
             </div>

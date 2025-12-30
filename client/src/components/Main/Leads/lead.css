@@ -137,11 +137,16 @@
 
 /* ===== MODAL CONTAINER ===== */
 .modalContainer {
-  width: 600px;
+  width: 90%;
+  max-width: 500px;
+  max-height: 85vh;
   background: #ffffff;
   border-radius: 20px;
   padding: 24px;
   box-shadow: 0px 20px 40px rgba(0, 0, 0, 0.3);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }
 
 /* ===== HEADER ===== */
@@ -246,6 +251,9 @@
   display: flex;
   flex-direction: column;
   gap: 14px;
+  overflow-y: auto;
+  padding-right: 8px;
+  max-height: calc(85vh - 220px);
 }
 
 /* ===== LABEL ===== */
@@ -268,4 +276,160 @@
   background: #DADADA;
   color: #9A9A9A;
   cursor: not-allowed;
+}
+
+/* ===== FORM GROUP ===== */
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.formGroup input,
+.formGroup select {
+  height: 44px;
+  border-radius: 12px;
+  border: 1px solid #BDBDBD;
+  padding: 0 14px;
+  font-size: 16px;
+  font-family: inherit;
+}
+
+.formGroup input:focus,
+.formGroup select:focus {
+  outline: none;
+  border-color: #1849d6;
+  box-shadow: 0 0 0 3px rgba(24, 73, 214, 0.1);
+}
+
+.formGroup input.error,
+.formGroup select.error {
+  border-color: #ff4757;
+  box-shadow: 0 0 0 3px rgba(255, 71, 87, 0.1);
+}
+
+.error-text {
+  color: #ff4757;
+  font-size: 12px;
+  font-weight: 600;
+  margin-top: -2px;
+}
+
+/* ===== STATUS BADGES ===== */
+.status {
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  display: inline-block;
+}
+
+.status.ongoing {
+  background: #E7F3FF;
+  color: #1849D6;
+}
+
+.status.hot {
+  background: #FFF0E7;
+  color: #FF6B35;
+}
+
+.status.warm {
+  background: #FFF4E7;
+  color: #F59E0B;
+}
+
+.status.cold {
+  background: #F0F0F0;
+  color: #666;
+}
+
+.status.scheduled {
+  background: #E8F5E9;
+  color: #2E7D32;
+}
+
+.status.won {
+  background: #E1F5FE;
+  color: #0277BD;
+}
+
+.status.lost {
+  background: #FFEBEE;
+  color: #C62828;
+}
+
+/* ===== DELETE BUTTON ===== */
+.delete-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 18px;
+  padding: 4px 8px;
+  transition: transform 0.2s;
+}
+
+.delete-btn:hover {
+  transform: scale(1.2);
+}
+
+/* ===== DRAG DROP ZONE ===== */
+.dragDropZone {
+  padding: 40px 24px;
+  border: 2px dashed #B8B8B8;
+  border-radius: 16px;
+  text-align: center;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.dragDropZone.active {
+  border-color: #1849d6;
+  background: #f0f4ff;
+}
+
+.dragDropZone svg {
+  margin-bottom: 12px;
+}
+
+/* ===== SECONDARY BUTTON ===== */
+.secondaryBtn {
+  background: transparent;
+  border: 1px solid #A3A3A3;
+  border-radius: 12px;
+  padding: 10px 22px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.secondaryBtn:hover {
+  border-color: #666;
+  background: #f5f5f5;
+}
+
+.secondaryBtn:disabled,
+.primaryBtn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* ===== CLOSE BUTTON ===== */
+.closeBtn {
+  background: none;
+  border: none;
+  font-size: 28px;
+  cursor: pointer;
+  color: #666;
+  padding: 0;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.2s;
+}
+
+.closeBtn:hover {
+  color: #000;
 }
