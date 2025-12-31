@@ -1,24 +1,39 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { createEmployee } from '../../../../redux/slices/employeeSlice'
+import { createEmployee, updateEmployee } from '../../../../redux/slices/employeeSlice'
 import './addEditEmployee.css'
 
-const AddEditEmployee = ({ onClose }) => {
+const AddEditEmployee = ({ onClose, employee }) => {
   const dispatch = useDispatch()
   const { loading } = useSelector(state => state.employees)
+  const isEditMode = !!employee
   
   const [infoTootip, setInfoTootip] = useState(false)
   const [formData, setFormData] = useState({
-    firstName: '',
-    lastName: '',
-    email: '',
-    location: '',
-    preferredLanguage: 'English',
-    department: '',
-    phone: ''
+    firstName: employee?.firstName || '',
+    lastName: employee?.lastName || '',
+    email: employee?.email || '',
+    location: employee?.location || '',
+    preferredLanguage: employee?.preferredLanguage || 'English',
+    department: employee?.department || '',
+    phone: employee?.phone || ''
   })
   
   const [errors, setErrors] = useState({})
+
+  useEffect(() => {
+    if (employee) {
+      setFormData({
+        firstName: employee.firstName || '',
+        lastName: employee.lastName || '',
+        email: employee.email || '',
+        location: employee.location || '',
+        preferredLanguage: employee.preferredLanguage || 'English',
+        department: employee.department || '',
+        phone: employee.phone || ''
+      })
+    }
+  }, [employee])
 
   const handleChange = (e) => {
     const { name, value } = e.target
@@ -66,9 +81,14 @@ const AddEditEmployee = ({ onClose }) => {
     if (!validateForm()) {
       return
     }
-    
-    dispatch(createEmployee(formData))
-    // Close modal after successful submission
+
+    if (isEditMode && employee?._id) {
+      dispatch(updateEmployee({ id: employee._id, data: formData }))
+    } else {
+      dispatch(createEmployee(formData))
+    }
+
+    // Close modal shortly after dispatch
     setTimeout(() => {
       onClose()
     }, 500)
@@ -78,7 +98,7 @@ const AddEditEmployee = ({ onClose }) => {
     <div className="modalOverlay" onClick={onClose}>
       <div className="employeeModal" onClick={e => e.stopPropagation()}>
         <div className="modalHeader">
-          <h3>Add New Employee</h3>
+          <h3>{isEditMode ? 'Edit Employee' : 'Add New Employee'}</h3>
           <button className="closeBtn" onClick={onClose}>✕</button>
         </div>
 
@@ -187,7 +207,7 @@ const AddEditEmployee = ({ onClose }) => {
           <div className="modalActions">
             <button type="button" onClick={onClose} disabled={loading}>Cancel</button>
             <button type="submit" className="primary" disabled={loading}>
-              {loading ? 'Saving...' : 'Save'}
+              {loading ? 'Saving...' : isEditMode ? 'Update' : 'Save'}
             </button>
           </div>
         </form>

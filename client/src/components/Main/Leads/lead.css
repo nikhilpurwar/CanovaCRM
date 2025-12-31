@@ -108,15 +108,16 @@
     height: 40px;
     border-radius: 8px;
     border: none;
-    background: #EFF1F4;
+    /* background: #EFF1F4; */
+    color: black;
     font-size: 14px;
     cursor: pointer;
 }
 
-.paginationNumber.active {
-    background: #091E42;
+/* .paginationNumber.active {
+    background: #;
     color: #fff;
-}
+} */
 
 .paginationDots {
     padding: 10px;
@@ -137,16 +138,15 @@
 
 /* ===== MODAL CONTAINER ===== */
 .modalContainer {
-  width: 90%;
-  max-width: 500px;
+  width: 100%;
+  max-width: 550px;
   max-height: 85vh;
   background: #ffffff;
-  border-radius: 20px;
+  border-radius: 16px;
   padding: 24px;
-  box-shadow: 0px 20px 40px rgba(0, 0, 0, 0.3);
+  box-shadow: 0px 4px 50px rgba(33, 33, 33, 0.08), 0px 4px 6px rgba(33, 33, 33, 0.04);
   display: flex;
   flex-direction: column;
-  overflow: hidden;
 }
 
 /* ===== HEADER ===== */
@@ -157,9 +157,36 @@
 }
 
 .modalHeader h2 {
-  font-size: 24px;
-  font-weight: 600;
-  color: #000;
+  margin: 0;
+}
+
+.csvModalHeader {
+  margin-bottom: 16px;
+}
+
+.csvModalTitleGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.csvModalTitleGroup h2 {
+  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-style: normal;
+  font-weight: 700;
+  font-size: 18px;
+  line-height: 26px;
+  letter-spacing: -0.2px;
+  color: #0b0b0b;
+}
+
+.csvModalSubtitle {
+  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  color: #6d6d6d;
 }
 
 .modalHeader button {
@@ -180,24 +207,86 @@
 
 /* ===== UPLOAD BOX ===== */
 .uploadBox {
-  margin-top: 24px;
-  padding: 40px 24px;
-  border: 2px dashed #B8B8B8;
-  border-radius: 16px;
-  text-align: center;
+  margin-top: 8px;
+  padding: 24px;
+  border: 1px dashed #292929;
+  border-radius: 8px;
+  background: #ffffff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
 }
 
-.uploadBox p {
-  font-size: 18px;
-  color: #000;
-  margin-bottom: 8px;
+.uploadIcon {
+  width: 42px;
+  height: 42px;
 }
 
-.uploadBox span {
-  display: block;
-  margin: 10px 0;
-  color: #8A8A8A;
+.uploadTextPrimary {
+  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   font-size: 14px;
+  line-height: 20px;
+  color: #0b0b0b;
+}
+
+.uploadDivider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 12px;
+  line-height: 18px;
+  color: #6d6d6d;
+}
+
+.uploadDividerLine {
+  flex: 1;
+  height: 1px;
+  background: #e7e7e7;
+}
+
+.csvFileRow {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 3px 9px;
+  width: 100%;
+  margin-top: 8px;
+  border: 0.5px solid rgba(0, 0, 0, 0.15);
+  border-radius: 5px;
+}
+
+.csvFileName {
+  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 14px;
+  line-height: 20px;
+  color: rgba(11, 11, 11, 0.49);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.csvFileIconBtn {
+  background: none;
+  border: none;
+  cursor: default;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.csvFileIconBtn svg {
+  width: 20px;
+  height: 20px;
+}
+
+.uploadHelperText {
+  margin-top: 8px;
+  font-size: 12px;
+  color: #6d6d6d;
 }
 
 /* ===== BUTTONS ===== */
@@ -205,18 +294,24 @@
   background: #041A1C;
   color: #fff;
   border: none;
-  border-radius: 12px;
-  padding: 10px 22px;
-  font-size: 16px;
+  border-radius: 8px;
+  padding: 12px 16px;
+  font-size: 14px;
   cursor: pointer;
 }
 
 .outlineBtn {
+  width: 95px;
+  height: 30px;
   background: transparent;
   border: 1px solid #A3A3A3;
-  border-radius: 12px;
-  padding: 10px 22px;
-  font-size: 16px;
+  border-radius: 8px;
+  /* padding: 12px 16px; */
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  align-self: center;
   cursor: pointer;
 }
 
@@ -232,17 +327,193 @@
 
 /* ===== LOADER ===== */
 .loader {
-  width: 70px;
-  height: 70px;
+  width: 42px;
+  height: 42px;
   border-radius: 50%;
-  border: 6px solid #E0E0E0;
-  border-top-color: #041A1C;
-  margin: 0 auto 16px;
-  font-size: 16px;
+  border: 4px solid #FAFAFA;
+  border-top-color: #000000;
+  margin: 0 auto;
   display: flex;
   align-items: center;
   justify-content: center;
+  position: relative;
 }
+
+.loader::after {
+  content: attr(data-progress);
+  position: absolute;
+  bottom: -18px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 10px;
+  line-height: 12px;
+  color: #0b0b0b;
+}
+
+.uploadProgress {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.uploadModal {
+  width: 550px;
+  height: 391px;
+  background: #fff;
+  padding: 24px;
+  border-radius: 16px;
+  box-shadow: 0px 4px 50px rgba(33,33,33,.08),
+              0px 4px 6px rgba(33,33,33,.04);
+  display: flex;
+  flex-direction: column;
+  gap: 26px;
+}
+.titleSection {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.title {
+  font-size: 18px;
+  font-weight: 700;
+  color: #0B0B0B;
+}
+
+.subtitle {
+  font-size: 14px;
+  color: #6D6D6D;
+}
+.uploadDrag {
+  height: 217px;
+  border: 1px dashed #292929;
+  border-radius: 8px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+
+.uploadDrag.active {
+  background: #F9F9F9;
+}
+.divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.dividerLine {
+  flex: 1;
+  height: 1px;
+  background: #E7E7E7;
+}
+
+.dividerText {
+  font-size: 12px;
+  color: #6D6D6D;
+}
+.fileRow {
+  margin-top: 8px;
+  width: 90%;
+  border: 0.5px solid rgba(0,0,0,.15);
+  border-radius: 5px;
+  padding: 6px 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.fileName {
+  font-size: 14px;
+  color: rgba(11,11,11,.49);
+}
+.uploadProgressWrap {
+  height: 176px;
+  border: 1px dashed #292929;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+
+.progressCircle {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: 4px solid #000;
+  background: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+}
+
+.progressValue {
+  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 12px;
+  line-height: 16px;
+  color: #0b0b0b;
+}
+
+.progressInfo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.progressInfo p {
+  margin: 0;
+  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 16px;
+  line-height: 22px;
+  color: #0b0b0b;
+}
+
+.outlineSmallBtn {
+  box-sizing: border-box;
+  min-width: 65px;
+  height: 30px;
+  padding: 6px 12px;
+  border-radius: 8px;
+  border: 1px solid #cecece;
+  background: #ffffff;
+  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 18px;
+  color: #6d6d6d;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+.footerButtons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 16px;
+}
+
+.primaryBtn {
+  width: 95px;
+  height: 30px;
+  background: #00181B;
+  color: #fff;
+  /* padding: 12px 16px; */
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
 
 
 /* ===== FORM BODY ===== */
@@ -375,7 +646,14 @@
 
 /* ===== DRAG DROP ZONE ===== */
 .dragDropZone {
-  padding: 40px 24px;
+  width: 502px;
+  height: 217px;
+  /* padding: 4px 24px; */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
   border: 2px dashed #B8B8B8;
   border-radius: 16px;
   text-align: center;
@@ -389,7 +667,14 @@
 }
 
 .dragDropZone svg {
-  margin-bottom: 12px;
+  margin-bottom: 6px;
+}
+
+.uploadTextGroup{
+  display: flex;
+  flex-direction: column;
+  /* align-items: center; */
+  gap: 6px;
 }
 
 /* ===== SECONDARY BUTTON ===== */

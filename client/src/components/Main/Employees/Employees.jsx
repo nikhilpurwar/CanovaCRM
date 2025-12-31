@@ -11,6 +11,7 @@ const Employee = () => {
   const { employees, loading, pagination } = useSelector(state => state.employees);
   const [showActions, setShowActions] = useState(null)
   const [showEmployeeModal, setShowEmployeeModal] = useState(false)
+  const [editingEmployee, setEditingEmployee] = useState(null)
   const [currentPage, setCurrentPage] = useState(1)
   const [selectedEmployees, setSelectedEmployees] = useState(new Set())
 
@@ -98,7 +99,10 @@ const Employee = () => {
           <button
             className="AddEmployeeBtn"
             type="submit"
-            onClick={() => setShowEmployeeModal(true)}
+            onClick={() => {
+              setEditingEmployee(null)
+              setShowEmployeeModal(true)
+            }}
           >
             Add Employee
           </button>
@@ -196,6 +200,7 @@ const Employee = () => {
                           <div className="actionsMenuWrapper" onClick={() => setShowActions(null)}>
                             <div className="actionMenu">
                               <div className='edit' onClick={() => {
+                                setEditingEmployee(employee)
                                 setShowEmployeeModal(true)
                                 setShowActions(null)
                               }}>
@@ -264,7 +269,13 @@ const Employee = () => {
       </div>
 
       {showEmployeeModal && (
-        <AddEditEmployee onClose={() => setShowEmployeeModal(false)} />
+        <AddEditEmployee
+          employee={editingEmployee}
+          onClose={() => {
+            setShowEmployeeModal(false)
+            setEditingEmployee(null)
+          }}
+        />
       )}
     </div>
   )
